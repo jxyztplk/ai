@@ -116,7 +116,7 @@ def test_sigmoid(a: float) -> None:
     assert abs(sigmoid(0.0) - 0.5) < 1e-5
 
     # Property 4: Monotonicity (Increasing) - Compare to slightly larger value
-    #assert sigmoid(a) < sigmoid(a + 1e-3) 
+    # assert sigmoid(a) < sigmoid(a + 1e-3)
 
 
 @pytest.mark.task0_2
@@ -135,7 +135,6 @@ def test_symmetric(a: float, b: float) -> None:
     gives the same value regardless of the order of its input.
     """
     assert mul(a, b) == mul(b, a)
-
 
 
 @pytest.mark.task0_2
@@ -157,7 +156,6 @@ def test_other(a: float, b: float) -> None:
     assert add(a, b) == add(b, a)
     assert relu(a) >= a
     assert relu_back(a, b) == b or relu_back(a, b) == 0
-
 
 
 # ## Task 0.3  - Higher-order functions

@@ -32,12 +32,12 @@ def neg(x: float) -> float:
 
 def lt(x: float, y: float) -> float:
     "$f(x) =$ 1.0 if x is less than y else 0.0"
-    return 1. if x < y else 0.
+    return 1.0 if x < y else 0.0
 
 
 def eq(x: float, y: float) -> float:
     "$f(x) =$ 1.0 if x is equal to y else 0.0"
-    return 1. if x == y else 0.
+    return 1.0 if x == y else 0.0
 
 
 def max(x: float, y: float) -> float:
@@ -66,7 +66,7 @@ def sigmoid(x: float) -> float:
     if x >= 0:
         return 1.0 / (1.0 + math.exp(-x))
     else:
-        return math.exp(x) / (1.0 + math.exp(x)) 
+        return math.exp(x) / (1.0 + math.exp(x))
 
 
 def relu(x: float) -> float:
@@ -100,19 +100,19 @@ def log_back(x: float, d: float) -> float:
 
 def inv(x: float) -> float:
     "$f(x) = 1/x$"
-    return (1 / x)
+    return 1 / x
 
 
 def inv_back(x: float, d: float) -> float:
     r"If $f(x) = 1/x$ compute $d \times f'(x)$"
-    derivative = -1 / (x ** 2)
+    derivative = -1 / (x**2)
     return d * derivative
 
 
 def relu_back(x: float, d: float) -> float:
     r"If $f = relu$ compute $d \times f'(x)$"
     # TODO: Implement for Task 0.1.
-    derivative = 1 if x>0 else 0
+    derivative = 1 if x > 0 else 0
     return d * derivative
 
 
@@ -134,10 +134,11 @@ def map(fn: Callable[[float], float]) -> Callable[[Iterable[float]], Iterable[fl
         A function that takes a list, applies `fn` to each element, and returns a
          new list
     """
+
     def apply_func_to_iter(iterable: Iterable[float]) -> Iterable[float]:
         return [fn(x) for x in iterable]
 
-    return  apply_func_to_iter
+    return apply_func_to_iter
 
 
 def negList(ls: Iterable[float]) -> Iterable[float]:
@@ -161,7 +162,10 @@ def zipWith(
          applying fn(x, y) on each pair of elements.
 
     """
-    def apply_func_to_iter(ls1: Iterable[float], ls2: Iterable[float]) -> Iterable[float]:
+
+    def apply_func_to_iter(
+        ls1: Iterable[float], ls2: Iterable[float]
+    ) -> Iterable[float]:
         return [fn(x, y) for x, y in zip(ls1, ls2)]
 
     return apply_func_to_iter
@@ -189,6 +193,7 @@ def reduce(
          $x_1 \ldots x_n$ and computes the reduction :math:`fn(x_3, fn(x_2,
          fn(x_1, x_0)))`
     """
+
     def reduced(iterable: Iterable[float]) -> float:
         result = start
         for elem in iterable:
