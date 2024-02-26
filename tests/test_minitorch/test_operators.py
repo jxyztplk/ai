@@ -5,7 +5,6 @@ from hypothesis import given
 from hypothesis.strategies import lists
 from strategies import assert_close, small_floats
 
-from minitorch import MathTest
 from minitorch.operators import (
     add,
     addLists,
@@ -25,6 +24,7 @@ from minitorch.operators import (
     sigmoid,
     sum,
 )
+from minitorch.testing import MathTest
 
 # ## Task 0.1 Basic hypothesis tests.
 
