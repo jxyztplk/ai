@@ -7,8 +7,13 @@ import random
 
 import minitorch
 
+from minitorch.module import Module
+from minitorch.scalar import Scalar
+from minitorch.optim import SGD
+from minitorch.datasets import datasets
 
-class Network(minitorch.Module):
+
+class Network(Module):
     def __init__(self, hidden_layers):
         super().__init__()
         # ASSIGN1.5
@@ -24,7 +29,7 @@ class Network(minitorch.Module):
         return self.layer3.forward(end)[0].sigmoid()
 
 
-class Linear(minitorch.Module):
+class Linear(Module):
     def __init__(self, in_size, out_size):
         super().__init__()
         self.weights = []
@@ -34,13 +39,13 @@ class Linear(minitorch.Module):
             for j in range(out_size):
                 self.weights[i].append(
                     self.add_parameter(
-                        f"weight_{i}_{j}", minitorch.Scalar(2 * (random.random() - 0.5))
+                        f"weight_{i}_{j}", Scalar(2 * (random.random() - 0.5))
                     )
                 )
         for j in range(out_size):
             self.bias.append(
                 self.add_parameter(
-                    f"bias_{j}", minitorch.Scalar(2 * (random.random() - 0.5))
+                    f"bias_{j}", Scalar(2 * (random.random() - 0.5))
                 )
             )
 
@@ -65,14 +70,14 @@ class ScalarTrain:
 
     def run_one(self, x):
         return self.model.forward(
-            (minitorch.Scalar(x[0], name="x_1"), minitorch.Scalar(x[1], name="x_2"))
+            (Scalar(x[0], name="x_1"), Scalar(x[1], name="x_2"))
         )
 
     def train(self, data, learning_rate, max_epochs=500, log_fn=default_log_fn):
         self.learning_rate = learning_rate
         self.max_epochs = max_epochs
         self.model = Network(self.hidden_layers)
-        optim = minitorch.SGD(self.model.parameters(), learning_rate)
+        optim = SGD(self.model.parameters(), learning_rate)
 
         losses = []
         for epoch in range(1, self.max_epochs + 1):
@@ -85,8 +90,8 @@ class ScalarTrain:
             for i in range(data.N):
                 x_1, x_2 = data.X[i]
                 y = data.y[i]
-                x_1 = minitorch.Scalar(x_1)
-                x_2 = minitorch.Scalar(x_2)
+                x_1 = Scalar(x_1)
+                x_2 = Scalar(x_2)
                 out = self.model.forward((x_1, x_2))
 
                 if y == 1:
@@ -113,5 +118,5 @@ if __name__ == "__main__":
     PTS = 50
     HIDDEN = 2
     RATE = 0.5
-    data = minitorch.datasets["Simple"](PTS)
+    data = datasets["Simple"](PTS)
     ScalarTrain(HIDDEN).train(data, RATE)

@@ -6,6 +6,7 @@ from interface.streamlit_utils import render_function
 
 import minitorch
 from minitorch.testing import MathTest, MathTestVariable
+from minitorch.scalar import Scalar
 
 MyModule = None
 minitorch

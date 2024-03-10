@@ -5,13 +5,18 @@ from hypothesis import given
 from hypothesis.strategies import DrawFn, composite, floats
 
 import minitorch
-from minitorch import (
-    MathTestVariable,
-    Scalar,
-    central_difference,
-    derivative_check,
-    operators,
-)
+#from minitorch import (
+#    MathTestVariable,
+#    Scalar,
+#    central_difference,
+#    derivative_check,
+#    operators,
+#)
+
+from minitorch.scalar import Scalar, derivative_check
+from minitorch.testing import MathTest, MathTestVariable
+from minitorch.autodiff import central_difference
+from minitorch import operators
 
 from .strategies import assert_close, small_floats
 
@@ -21,7 +26,7 @@ def scalars(
     draw: DrawFn, min_value: float = -100000, max_value: float = 100000
 ) -> Scalar:
     val = draw(floats(min_value=min_value, max_value=max_value))
-    return minitorch.Scalar(val)
+    return Scalar(val)
 
 
 small_scalars = scalars(min_value=-100, max_value=100)
@@ -63,7 +68,7 @@ def test_simple(a: float, b: float) -> None:
 
     # Simple relu
     c = Scalar(a).relu() + Scalar(b).relu()
-    assert_close(c.data, minitorch.operators.relu(a) + minitorch.operators.relu(b))
+    assert_close(c.data, operators.relu(a) + operators.relu(b))
 
     # Add others if you would like...
 

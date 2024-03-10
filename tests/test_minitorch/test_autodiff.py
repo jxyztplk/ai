@@ -3,7 +3,8 @@ from typing import Tuple
 import pytest
 
 import minitorch
-from minitorch import Context, ScalarFunction, ScalarHistory
+from minitorch.autodiff import Context
+from minitorch.scalar import Scalar, ScalarFunction, ScalarHistory
 
 # ## Task 1.3 - Tests for the autodifferentiation machinery.
 
@@ -41,8 +42,8 @@ class Function2(ScalarFunction):
 
 @pytest.mark.task1_3
 def test_chain_rule1() -> None:
-    x = minitorch.Scalar(0.0)
-    constant = minitorch.Scalar(
+    x = Scalar(0.0)
+    constant = Scalar(
         0.0, ScalarHistory(Function1, ctx=Context(), inputs=[x, x])
     )
     back = constant.chain_rule(d_output=5)
@@ -51,8 +52,8 @@ def test_chain_rule1() -> None:
 
 @pytest.mark.task1_3
 def test_chain_rule2() -> None:
-    var = minitorch.Scalar(0.0, ScalarHistory())
-    constant = minitorch.Scalar(
+    var = Scalar(0.0, ScalarHistory())
+    constant = Scalar(
         0.0, ScalarHistory(Function1, ctx=Context(), inputs=[var, var])
     )
     back = constant.chain_rule(d_output=5)
@@ -66,7 +67,7 @@ def test_chain_rule2() -> None:
 def test_chain_rule3() -> None:
     "Check that constrants are ignored and variables get derivatives."
     constant = 10
-    var = minitorch.Scalar(5)
+    var = Scalar(5)
 
     y = Function2.apply(constant, var)
 
@@ -80,8 +81,8 @@ def test_chain_rule3() -> None:
 
 @pytest.mark.task1_3
 def test_chain_rule4() -> None:
-    var1 = minitorch.Scalar(5)
-    var2 = minitorch.Scalar(10)
+    var1 = Scalar(5)
+    var2 = Scalar(10)
 
     y = Function2.apply(var1, var2)
 
@@ -104,7 +105,7 @@ def test_chain_rule4() -> None:
 @pytest.mark.task1_4
 def test_backprop1() -> None:
     # Example 1: F1(0, v)
-    var = minitorch.Scalar(0)
+    var = Scalar(0)
     var2 = Function1.apply(0, var)
     var2.backward(d_output=5)
     assert var.derivative == 5
@@ -113,7 +114,7 @@ def test_backprop1() -> None:
 @pytest.mark.task1_4
 def test_backprop2() -> None:
     # Example 2: F1(0, 0)
-    var = minitorch.Scalar(0)
+    var = Scalar(0)
     var2 = Function1.apply(0, var)
     var3 = Function1.apply(0, var2)
     var3.backward(d_output=5)
@@ -123,7 +124,7 @@ def test_backprop2() -> None:
 @pytest.mark.task1_4
 def test_backprop3() -> None:
     # Example 3: F1(F1(0, v1), F1(0, v1))
-    var1 = minitorch.Scalar(0)
+    var1 = Scalar(0)
     var2 = Function1.apply(0, var1)
     var3 = Function1.apply(0, var1)
     var4 = Function1.apply(var2, var3)
@@ -134,7 +135,7 @@ def test_backprop3() -> None:
 @pytest.mark.task1_4
 def test_backprop4() -> None:
     # Example 4: F1(F1(0, v1), F1(0, v1))
-    var0 = minitorch.Scalar(0)
+    var0 = Scalar(0)
     var1 = Function1.apply(0, var0)
     var2 = Function1.apply(0, var1)
     var3 = Function1.apply(0, var1)

@@ -7,13 +7,14 @@ import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
 
-import minitorch
+
+from minitorch.datasets import datasets
 
 
 def render_train_interface(
     TrainCls, graph=True, hidden_layer=True, parameter_control=False
 ):
-    datasets_map = minitorch.datasets
+    datasets_map = datasets
     st.write("## Sandbox for Model Training")
 
     st.markdown("### Dataset")
@@ -21,7 +22,7 @@ def render_train_interface(
     points = col2.slider("Number of points", min_value=1, max_value=150, value=50)
     selected_dataset = col1.selectbox("Select dataset", list(datasets_map.keys()))
 
-    @st.cache
+    @st.cache_data
     def get_dataset(selected_dataset, points):
         return datasets_map[selected_dataset](points)
 
