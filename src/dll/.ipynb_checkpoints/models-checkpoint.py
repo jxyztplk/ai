@@ -21,7 +21,7 @@ class Module(nn.Module, HyperParameters):
     def forward(self, X):
         assert hasattr(self, 'net'), 'Neural nerwork is defined.'
         return self.net(X)
-
+    
     def plot(self, key, value, train):
         """Plot a point in animation"""
         assert hasattr(self, 'trainer'), 'Trainer is not inited'
